@@ -3,27 +3,12 @@ const Schema = mongoose.Schema;
 
 const addressSchema = new Schema(
   {
-    user: {
+    userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: 'User', // Reference to the Address model
       required: true,
     },
-    name: {
-      type: String,
-      required: true,
-    },
-    phoneNumber: {
-      type: String,
-      required: true,
-    },
-    email: {
-      type: String,
-      lowercase: true,
-      required: true,
-      unique: [true, 'User with this email already exist!!!'],
-      trim: true,
-    },
-    address: {
+    streetAddress: {
       type: String,
       required: true,
     },

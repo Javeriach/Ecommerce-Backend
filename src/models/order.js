@@ -1,65 +1,54 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 
-const orderItemSchema = new Schema({
-  product: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Product', // Reference to the Product model
-    required: true,
-  },
-  quantity: {
-    type: Number,
-    required: true,
-    min: [1, 'Quantity must be at least 1'],
-  },
-  price: {
-    type: Number,
-    required: true,
-    min: [0, 'Price cannot be negative'],
-  },
-});
-
-const orderSchema = new Schema(
+const orderSchema = new mongoose.Schema(
   {
+    orderId: {
+      type: String,
+      required: true,
+      index: true,
+    },
+    transactionId: {
+      type: String,
+      required: true,
+      index: true,
+    },
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User', // Reference to the User model
+      ref: 'User',
       required: true,
     },
-    items: [orderItemSchema], // Array of order items
-    totalAmount: {
+    product: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Product',
+      required: true,
+    },
+    quantity: {
       type: Number,
       required: true,
-      min: [0, 'Total amount cannot be negative'],
+      min: [1, 'Quantity must be at least 1'],
     },
     shippingAddress: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Address', // Reference to the Address model
+      ref: 'Address',
       required: true,
     },
     paymentStatus: {
       type: String,
-      enum: ['Pending', 'Paid', 'Failed'], // Payment status options
+      enum: ['Pending', 'Paid', 'Failed'],
       default: 'Pending',
     },
     orderStatus: {
       type: String,
-      enum: ['Processing', 'Shipped', 'Delivered', 'Cancelled'], // Order status options
+      enum: ['Processing', 'Shipped', 'Delivered', 'Cancelled'],
       default: 'Processing',
     },
     paymentMethod: {
       type: String,
-      enum: ['Credit Card', 'PayPal', 'Cash on Delivery'], // Payment method options
-      required: true,
-    },
-    transactionId: {
-      type: String, // Payment gateway transaction ID
+      enum: ['Credit Card', 'Cash on Delivery'],
+      default: 'Credit Card',
     },
   },
-  {
-    timestamps: true, // Adds createdAt and updatedAt fields
-  }
+  { timestamps: true }
 );
 
-const Order = mongoose.model('Order', orderSchema);
-module.exports = Order;
+module.exports = mongoose.model('Order', orderSchema);

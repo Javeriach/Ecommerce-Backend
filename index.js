@@ -10,6 +10,8 @@ const cookieParser = require('cookie-parser');
 const productsRoute = require('./src/routes/products');
 const cartRouter = require('./src/routes/cart');
 const wishlistRouter = require('./src/routes/wishlist');
+const orderRouter = require('./src/routes/order');
+
 console.log(process.env.CLOUDNARY_API_KEY);
 
 app.use(express.json());
@@ -27,6 +29,7 @@ app.use('/', categoryRouter);
 app.use('/', productsRoute);
 app.use('/', cartRouter);
 app.use('/', wishlistRouter);
+app.use('/', orderRouter);
 
 app.all('*', (req, res) => {
   res.status(404).json({ message: 'Path not found!!' });
